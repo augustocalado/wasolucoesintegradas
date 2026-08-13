@@ -1,5 +1,4 @@
 import Icons from '@/components/Icons';
-import HeroCarousel from '@/components/HeroCarousel';
 import BannerDecor from '@/components/BannerDecor';
 
 export default function Hero() {
@@ -53,7 +52,15 @@ export default function Hero() {
 
         <div className="hero-image-wrapper">
           <div className="image-border-glow"></div>
-          <HeroCarousel />
+          <img
+            src="/assets/images/hero.jpg"
+            alt="Interior moderno e iluminado de um espaço comercial atendido pela WA Soluções Integradas"
+            className="hero-image"
+            width="600"
+            height="400"
+            loading="eager"
+            fetchPriority="high"
+          />
         </div>
       </div>
       <div className="wave-divider">
