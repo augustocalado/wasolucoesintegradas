@@ -1,0 +1,19 @@
+# dependências
+node_modules/
+
+# build
+.next/
+out/
+dist/
+
+# variáveis de ambiente (NUNCA commitar)
+.env
+.env*.local
+.env.local
+
+# Vercel
+.vercel/
+
+# sistema
+.DS_Store
+Thumbs.db
