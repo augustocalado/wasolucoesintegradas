@@ -43,7 +43,8 @@ export default function Solicitacao() {
               <Icons name="alert-triangle" />
               <p>
                 <strong>Atenção:</strong> Não realizamos pequenos reparos residenciais (marido de aluguel/eletricista
-                residencial). Nosso atendimento é focado exclusivamente em varejo e instalações corporativas B2B.
+                residencial). Nosso atendimento é focado exclusivamente em empresas, lojas, consultórios, escritórios e
+                salas comerciais (B2B).
               </p>
             </div>
           </div>

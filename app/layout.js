@@ -6,19 +6,22 @@ const FAVICON_SVG = encodeURIComponent(
 
 export const metadata = {
   metadataBase: new URL('https://www.wasolucoesintegradas.com.br'),
-  title: 'WA Soluções Integradas | Manutenção para Lojas de Varejo em São Paulo',
+  title: 'WA Soluções Integradas | Manutenção para Lojas, Consultórios e Escritórios em São Paulo',
   description:
-    'Manutenção e instalações para lojas de varejo em São Paulo. Soluções elétricas, iluminação, CFTV, hidráulica, infraestrutura e suporte técnico B2B para sua operação continuar funcionando.',
+    'Manutenção e instalações para lojas, consultórios, escritórios e salas comerciais em São Paulo. Soluções elétricas, iluminação, CFTV, hidráulica, infraestrutura e suporte técnico B2B.',
   keywords: [
     'manutenção comercial',
     'manutenção preventiva',
-    'instalações elétricas varejo',
+    'instalações elétricas comerciais',
     'CFTV lojas',
     'infraestrutura comercial',
-    'adequação de lojas',
+    'som ambiente loja',
     'suporte técnico B2B',
-    'facilities varejo',
+    'facilities comercial',
     'manutenção loja São Paulo',
+    'manutenção consultório',
+    'manutenção escritório',
+    'salas comerciais',
   ],
   authors: [{ name: 'WA Soluções Integradas' }],
   robots: { index: true, follow: true },
@@ -28,9 +31,9 @@ export const metadata = {
     locale: 'pt_BR',
     siteName: 'WA Soluções Integradas',
     url: 'https://www.wasolucoesintegradas.com.br/',
-    title: 'WA Soluções Integradas | Manutenção para Lojas de Varejo em São Paulo',
+    title: 'WA Soluções Integradas | Manutenção para Lojas, Consultórios e Escritórios em São Paulo',
     description:
-      'Manutenção e instalações para lojas de varejo. Soluções elétricas, iluminação, CFTV, hidráulica, infraestrutura e suporte técnico B2B para empresas.',
+      'Manutenção e instalações para lojas, consultórios, escritórios e salas comerciais. Soluções elétricas, iluminação, CFTV, hidráulica, infraestrutura e suporte técnico B2B para empresas.',
     images: [
       {
         url: 'https://www.wasolucoesintegradas.com.br/assets/images/hero.png',
@@ -40,9 +43,9 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'WA Soluções Integradas | Manutenção para Lojas de Varejo em São Paulo',
+    title: 'WA Soluções Integradas | Manutenção para Lojas, Consultórios e Escritórios em São Paulo',
     description:
-      'Manutenção e instalações para lojas de varejo. Soluções elétricas, iluminação, CFTV, hidráulica, infraestrutura e suporte técnico B2B para empresas.',
+      'Manutenção e instalações para lojas, consultórios, escritórios e salas comerciais. Soluções elétricas, iluminação, CFTV, hidráulica, infraestrutura e suporte técnico B2B para empresas.',
     images: ['https://www.wasolucoesintegradas.com.br/assets/images/hero.png'],
   },
   icons: {

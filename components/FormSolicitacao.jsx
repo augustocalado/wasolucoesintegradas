@@ -128,7 +128,7 @@ export default function FormSolicitacao() {
             <span className="error-msg">Por favor, insira seu nome completo.</span>
           </div>
           <div className="form-group">
-            <label htmlFor="empresa">Empresa / Loja *</label>
+            <label htmlFor="empresa">Empresa / Ponto Comercial *</label>
             <input type="text" id="empresa" name="empresa" placeholder="Nome da sua empresa" onInput={() => validateField('empresa')} />
             <span className="error-msg">Por favor, insira o nome da empresa.</span>
           </div>
@@ -182,14 +182,14 @@ export default function FormSolicitacao() {
             </label>
             <label className="urgency-option option-high">
               <input type="radio" name="urgencia" value="Alta / Urgente" onChange={() => validateField('urgencia')} />
-              <span>Urgente / Loja Parada</span>
+              <span>Urgente / Operação Parada</span>
             </label>
           </div>
         </div>
 
         <div className="form-group">
           <label htmlFor="descricao">Descrição do problema *</label>
-          <textarea id="descricao" name="descricao" rows="4" placeholder="Descreva brevemente o problema técnico ou serviço que precisa ser executado na loja..." onInput={() => validateField('descricao')}></textarea>
+          <textarea id="descricao" name="descricao" rows="4" placeholder="Descreva brevemente o problema técnico ou serviço que precisa ser executado no seu espaço comercial..." onInput={() => validateField('descricao')}></textarea>
           <span className="error-msg">Por favor, preencha a descrição do problema.</span>
         </div>
 

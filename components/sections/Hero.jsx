@@ -1,21 +1,28 @@
 import Icons from '@/components/Icons';
+import HeroCarousel from '@/components/HeroCarousel';
+import BannerDecor from '@/components/BannerDecor';
 
 export default function Hero() {
   return (
     <section className="hero-section" id="inicio">
+      <BannerDecor />
       <div className="container hero-container">
         <div className="hero-content">
           <span className="badge">Facilities & Manutenção Comercial</span>
-          <h1 className="hero-title">Manutenção e instalações para lojas de varejo</h1>
-          <p className="hero-subtitle">Cuidamos da estrutura da sua loja para você focar no seu negócio.</p>
+          <h1 className="hero-title">
+            Manutenção e instalações para <span className="text-gradient">o seu negócio</span>
+          </h1>
+          <p className="hero-subtitle">
+            Cuidamos da estrutura de lojas, consultórios, escritórios e salas comerciais para você focar no seu negócio.
+          </p>
           <p className="hero-description">
             Soluções técnicas para manutenção, instalações elétricas, iluminação, CFTV, segurança e infraestrutura de
-            lojas.
+            espaços comerciais.
           </p>
 
           <div className="hero-cta-group">
-            <a href="#solicitacao" className="btn btn-primary" id="cta-hero-solicitar">
-              <Icons name="calendar" /> SOLICITAR ATENDIMENTO
+            <a href="/abrir-chamado" className="btn btn-primary" id="cta-hero-solicitar">
+              <Icons name="calendar" /> ABRIR CHAMADO
             </a>
             <a
               href="https://wa.me/5511980604534?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20WA%20Sol%C3%A7%C3%B5es%20Integradas%20e%20gostaria%20de%20solicitar%20um%20atendimento%20para%20minha%20loja."
@@ -46,15 +53,7 @@ export default function Hero() {
 
         <div className="hero-image-wrapper">
           <div className="image-border-glow"></div>
-          <img
-            src="/assets/images/hero-640.jpg"
-            alt="Interior moderno e iluminado de uma loja de varejo atendida pela WA Soluções Integradas"
-            className="hero-image"
-            width="600"
-            height="400"
-            loading="eager"
-            fetchPriority="high"
-          />
+          <HeroCarousel />
         </div>
       </div>
       <div className="wave-divider">

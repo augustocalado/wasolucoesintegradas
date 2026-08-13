@@ -1,13 +1,13 @@
 import Icons from '@/components/Icons';
 
 const CORP_LIST = [
-  'Atendimento para lojas de varejo',
+  'Atendimento para lojas, consultórios e escritórios',
   'Manutenção preventiva e corretiva',
   'Instalações',
   'Adequações',
   'Suporte técnico',
   'Atendimento recorrente',
-  'Possibilidade de atendimento em múltiplas lojas',
+  'Possibilidade de atendimento em múltiplos pontos',
 ];
 
 export default function Corporativo() {
@@ -17,10 +17,11 @@ export default function Corporativo() {
         <div className="corp-grid">
           <div className="corp-content">
             <span className="section-tag">Parceria Corporativa B2B</span>
-            <h2 className="section-title">SUA REDE DE LOJAS PRECISA DE UM PARCEIRO DE MANUTENÇÃO?</h2>
+            <h2 className="section-title">SUA EMPRESA PRECISA DE UM PARCEIRO DE MANUTENÇÃO?</h2>
             <p className="corp-lead-text">
-              A WA Soluções Integradas oferece suporte técnico para empresas que precisam manter suas lojas
-              funcionando, reduzindo problemas de infraestrutura e agilizando a resolução de ocorrências.
+              A WA Soluções Integradas oferece suporte técnico para empresas que precisam manter lojas, consultórios,
+              escritórios e salas comerciais funcionando, reduzindo problemas de infraestrutura e agilizando a resolução
+              de ocorrências.
             </p>
 
             <ul className="corp-list">
@@ -33,8 +34,8 @@ export default function Corporativo() {
             </ul>
 
             <div className="corp-cta">
-              <a href="#solicitacao" className="btn btn-primary" id="cta-corporativo-solicitar">
-                <Icons name="building" /> SOLICITAR ATENDIMENTO EMPRESARIAL
+              <a href="/abrir-chamado" className="btn btn-primary" id="cta-corporativo-solicitar">
+                <Icons name="building" /> ABRIR CHAMADO EMPRESARIAL
               </a>
             </div>
           </div>
@@ -46,7 +47,7 @@ export default function Corporativo() {
               </div>
               <h3>Foco Empresarial B2B</h3>
               <p>
-                Nosso posicionamento é estritamente voltado a atender empresas, redes de lojas e operações
+                Nosso posicionamento é estritamente voltado a atender empresas, lojas, consultórios, escritórios e salas
                 comerciais. Não nos apresentamos nem atuamos como marido de aluguel, assistência residencial,
                 pequenos reparos domésticos ou eletricista residencial. Entregamos a seriedade técnica e a organização
                 contratual exigida por redes corporativas.

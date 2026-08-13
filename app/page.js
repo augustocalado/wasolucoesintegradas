@@ -18,7 +18,7 @@ const LOCAL_BUSINESS_JSON_LD = {
   '@id': 'https://www.wasolucoesintegradas.com.br/#business',
   name: 'WA Soluções Integradas',
   description:
-    'Manutenção e instalações para lojas de varejo. Soluções elétricas, iluminação, CFTV, hidráulica, infraestrutura e suporte técnico B2B.',
+    'Manutenção e instalações para lojas, consultórios, escritórios e salas comerciais. Soluções elétricas, iluminação, CFTV, hidráulica, infraestrutura e suporte técnico B2B.',
   image: 'https://www.wasolucoesintegradas.com.br/assets/images/hero.png',
   url: 'https://www.wasolucoesintegradas.com.br/',
   telephone: '+5511980604534',
@@ -60,7 +60,7 @@ const WEBSITE_JSON_LD = {
   url: 'https://www.wasolucoesintegradas.com.br/',
   name: 'WA Soluções Integradas',
   description:
-    'Manutenção e instalações para lojas de varejo em São Paulo. Facilities B2B para redes e operações comerciais.',
+    'Manutenção e instalações para lojas, consultórios e escritórios em São Paulo. Facilities B2B para empresas, redes e operações comerciais.',
   inLanguage: 'pt-BR',
   publisher: {
     '@id': 'https://www.wasolucoesintegradas.com.br/#business',
@@ -76,7 +76,7 @@ const FAQ_JSON_LD = {
       name: 'Quais serviços a WA Soluções Integradas oferece?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Instalações elétricas, iluminação, CFTV e segurança, manutenção preventiva e corretiva, hidráulica e infraestrutura para lojas de varejo e operações comerciais.',
+        text: 'Instalações elétricas, iluminação, CFTV e segurança, som ambiente e microfone, manutenção preventiva e corretiva, hidráulica e infraestrutura para lojas, consultórios, escritórios e salas comerciais.',
       },
     },
     {
@@ -84,7 +84,7 @@ const FAQ_JSON_LD = {
       name: 'A WA atende residências ou pequenos reparos domésticos?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Não. Nosso atendimento é exclusivamente B2B, focado em lojas, redes de varejo e operações comerciais. Não atuamos como marido de aluguel ou eletricista residencial.',
+        text: 'Não. Nosso atendimento é exclusivamente B2B, focado em lojas, consultórios, escritórios, salas comerciais e operações corporativas. Não atuamos como marido de aluguel ou eletricista residencial.',
       },
     },
     {
@@ -92,7 +92,7 @@ const FAQ_JSON_LD = {
       name: 'Qual é a área de atendimento da WA Soluções Integradas?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Atendemos lojas em São Paulo, capital e região metropolitana. Para redes com múltiplos pontos comerciais, consulte nossa equipe sobre a viabilidade em outras localidades.',
+        text: 'Atendemos lojas, consultórios e escritórios em São Paulo, capital e região metropolitana. Para redes com múltiplos pontos comerciais, consulte nossa equipe sobre a viabilidade em outras localidades.',
       },
     },
     {

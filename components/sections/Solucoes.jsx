@@ -1,10 +1,11 @@
 const SOLUCOES = [
   { emoji: '⚡', title: 'Elétrica', desc: 'Infraestrutura elétrica comercial completa, disjuntores, quadros e adequação de carga de forma segura.' },
   { emoji: '💡', title: 'Iluminação', desc: 'Manutenção, instalação e reposição de luminárias, painéis de LED e spots comerciais para PDV.' },
-  { emoji: '📹', title: 'CFTV', desc: 'Instalação técnica e manutenção de câmeras e sistemas de CFTV dedicados à segurança da loja.' },
+  { emoji: '📹', title: 'CFTV', desc: 'Instalação técnica e manutenção de câmeras e sistemas de CFTV dedicados à segurança do espaço comercial.' },
+  { emoji: '🔊', title: 'Som Ambiente', desc: 'Instalação de som ambiente, caixas acústicas e microfone para chamadas e comunicação com clientes.' },
   { emoji: '🔧', title: 'Manutenção', desc: 'Suporte corretivo e preventivo focado em estabilidade física e no pleno funcionamento das operações.' },
   { emoji: '💧', title: 'Hidráulica', desc: 'Reparos hidráulicos comerciais rápidos, detecção de vazamentos e ajustes em instalações de uso comum.' },
-  { emoji: '🏪', title: 'Infraestrutura de lojas', desc: 'Manutenção física e adequação contínua da estrutura das lojas para manter um padrão técnico elevado.' },
+  { emoji: '🏪', title: 'Infraestrutura comercial', desc: 'Manutenção física e adequação contínua da estrutura de lojas, consultórios e escritórios para manter um padrão técnico elevado.' },
   { emoji: '🛠️', title: 'Instalações', desc: 'Adequação física do ponto comercial para receber novas operações ou realizar mudanças de layout.' },
   { emoji: '🏢', title: 'Atendimento empresarial', desc: 'Estrutura voltada a oferecer atendimento recorrente corporativo para manter sua rede funcionando.' },
 ];

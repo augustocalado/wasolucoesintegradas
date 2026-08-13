@@ -1,12 +1,12 @@
 import Icons from '@/components/Icons';
 
 const DIFERENCIAIS = [
-  { icon: 'store', title: 'Atendimento especializado para lojas', desc: 'Conhecemos as necessidades e urgências de uma operação de varejo.' },
-  { icon: 'zap', title: 'Agilidade', desc: 'Atendimento rápido para reduzir o tempo de loja parada.' },
+  { icon: 'store', title: 'Atendimento especializado para empresas', desc: 'Conhecemos as necessidades e urgências de lojas, consultórios, escritórios e salas comerciais.' },
+  { icon: 'zap', title: 'Agilidade', desc: 'Atendimento rápido para reduzir o tempo de negócio parado.' },
   { icon: 'users', title: 'Profissionais capacitados', desc: 'Serviços executados com organização, segurança e padrão profissional.' },
   { icon: 'shuffle', title: 'Soluções integradas', desc: 'Diversos serviços técnicos centralizados em uma única empresa.' },
-  { icon: 'building', title: 'Foco empresarial', desc: 'Atendimento direcionado para empresas, lojas e operações de varejo.' },
-  { icon: 'check-circle2', title: 'Compromisso com o funcionamento da loja', desc: 'Nosso objetivo é resolver o problema e manter a operação funcionando.' },
+  { icon: 'building', title: 'Foco empresarial', desc: 'Atendimento direcionado para empresas, lojas, consultórios e salas comerciais.' },
+  { icon: 'check-circle2', title: 'Compromisso com o funcionamento do seu negócio', desc: 'Nosso objetivo é resolver o problema e manter a operação funcionando.' },
 ];
 
 export default function Diferenciais() {
@@ -18,7 +18,7 @@ export default function Diferenciais() {
             <span className="section-tag tag-white">Diferenciais Competitivos</span>
             <h2 className="section-title text-white">Por que escolher a WA?</h2>
             <p className="section-desc text-muted">
-              Construímos parcerias sólidas no varejo através de um atendimento técnico, organizado e voltado para as
+              Construímos parcerias sólidas com empresas através de um atendimento técnico, organizado e voltado para as
               necessidades corporativas.
             </p>
 

@@ -9,8 +9,9 @@ export default function OndeAtendemos() {
             <span className="section-tag">Área de Atendimento</span>
             <h2 className="section-title">ONDE ATENDEMOS</h2>
             <p>
-              A WA Soluções Integradas atende lojas e empresas de varejo em São Paulo (capital e região metropolitana).
-              Oferecemos soluções integradas com suporte contínuo para manter sua operação no rumo certo.
+              A WA Soluções Integradas atende lojas, consultórios, escritórios e salas comerciais em São Paulo
+              (capital e região metropolitana). Oferecemos soluções integradas com suporte contínuo para manter sua
+              operação no rumo certo.
             </p>
             <div className="coverage-area">
               <h3>Atendimento em</h3>
@@ -25,7 +26,7 @@ export default function OndeAtendemos() {
             </p>
             <div className="onde-alert">
               <Icons name="info" />{' '}
-              <span>Se sua loja fica em outra cidade, entre em contato pelo WhatsApp e verifique a possibilidade de atendimento técnico no local.</span>
+              <span>Se o seu ponto comercial fica em outra cidade, entre em contato pelo WhatsApp e verifique a possibilidade de atendimento técnico no local.</span>
             </div>
           </div>
           <div className="onde-visual">

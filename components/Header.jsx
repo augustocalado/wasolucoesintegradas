@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Icons from '@/components/Icons';
 
 const NAV_LINKS = [
@@ -17,6 +18,10 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef(null);
+  const pathname = usePathname();
+  const isHome = pathname === '/';
+
+  const linkHref = (href) => (isHome ? href : `/${href}`);
 
   useEffect(() => {
     const onScroll = () => {
@@ -57,7 +62,7 @@ export default function Header() {
   return (
     <header className={`main-header${scrolled ? ' scrolled' : ''}`} id="header">
       <div className="container header-container">
-        <a href="#inicio" className="logo" aria-label="WA Soluções Integradas Home">
+        <a href={isHome ? '#inicio' : '/'} className="logo" aria-label="WA Soluções Integradas Home">
           <svg className="logo-icon" width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="100" height="100" rx="20" fill="url(#logo-grad)" />
             <path d="M25 35 L40 70 L50 48 L60 70 L75 35" stroke="#00f0ff" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
@@ -79,7 +84,7 @@ export default function Header() {
           <ul>
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
-                <a href={link.href} className="nav-link">
+                <a href={linkHref(link.href)} className="nav-link">
                   {link.label}
                 </a>
               </li>
@@ -88,8 +93,8 @@ export default function Header() {
         </nav>
 
         <div className="header-actions">
-          <a href="#solicitacao" className="btn btn-sm btn-outline">
-            Solicitar Suporte
+          <a href="/abrir-chamado" className="btn btn-sm btn-outline">
+            Abrir Chamado
           </a>
           <button
             className={`menu-toggle${menuOpen ? ' active' : ''}`}
@@ -109,14 +114,14 @@ export default function Header() {
           <ul>
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
-                <a href={link.href} className="mobile-link" onClick={() => setMenuOpen(false)}>
+                <a href={linkHref(link.href)} className="mobile-link" onClick={() => setMenuOpen(false)}>
                   {link.label}
                 </a>
               </li>
             ))}
             <li>
-              <a href="#solicitacao" className="mobile-link btn btn-primary" onClick={() => setMenuOpen(false)}>
-                Solicitar Atendimento
+              <a href="/abrir-chamado" className="mobile-link btn btn-primary" onClick={() => setMenuOpen(false)}>
+                Abrir Chamado
               </a>
             </li>
           </ul>
