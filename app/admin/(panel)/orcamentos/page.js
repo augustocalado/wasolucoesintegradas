@@ -145,20 +145,20 @@ export default async function AdminOrcamentos({ searchParams }) {
                 const statusMeta = STATUS_META[o.status] ?? { label: o.status, className: 'novo' };
                 return (
                   <tr key={o.id}>
-                    <td className="admin-cel-cliente">
+                    <td className="admin-cel-cliente" data-label="Cliente">
                       <strong>{o.clientes?.nome ?? 'Cliente removido'}</strong>
                       <small>{o.clientes?.cidade}</small>
                     </td>
-                    <td className="admin-meta">{fmtDate(o.created_at)}</td>
-                    <td className="admin-meta">{o.prazo}</td>
-                    <td>{(o.orcamento_itens ?? []).length}</td>
-                    <td>
+                    <td className="admin-meta" data-label="Data">{fmtDate(o.created_at)}</td>
+                    <td className="admin-meta" data-label="Validade">{o.prazo}</td>
+                    <td data-label="Itens">{(o.orcamento_itens ?? []).length}</td>
+                    <td data-label="Total">
                       <strong className="admin-total">{fmtBRL(total)}</strong>
                     </td>
-                    <td>
+                    <td data-label="Status">
                       <span className={`admin-badge ${statusMeta.className}`}>{statusMeta.label}</span>
                     </td>
-                    <td>
+                    <td data-label="Ações">
                       <div className="admin-row-actions">
                         <Link href={`/admin/orcamentos/${o.id}`} className="admin-edit-btn">
                           <Icons name="file-text" size={14} /> Ver

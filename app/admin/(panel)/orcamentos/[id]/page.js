@@ -141,11 +141,11 @@ export default async function OrcamentoDetalhe({ params }) {
             <tbody>
               {itens.map((it) => (
                 <tr key={it.id}>
-                  <td className="admin-cel-cliente">
+                  <td className="admin-cel-cliente" data-label="Descrição">
                     <strong>{it.descricao}</strong>
                     <small>{it.produtos?.nome ? `Catálogo: ${it.produtos.nome}` : 'Linha manual'}</small>
                   </td>
-                  <td>
+                  <td data-label="Qtd">
                     <form action={updateItem} className="admin-inline-edit">
                       <input type="hidden" name="id" value={it.id} />
                       <input type="hidden" name="orcamento_id" value={orcamento.id} />
@@ -159,7 +159,7 @@ export default async function OrcamentoDetalhe({ params }) {
                       />
                     </form>
                   </td>
-                  <td>
+                  <td data-label="Valor unit.">
                     <form action={updateItem} className="admin-inline-edit">
                       <input type="hidden" name="id" value={it.id} />
                       <input type="hidden" name="orcamento_id" value={orcamento.id} />
@@ -176,12 +176,12 @@ export default async function OrcamentoDetalhe({ params }) {
                       </button>
                     </form>
                   </td>
-                  <td>
+                  <td data-label="Subtotal">
                     <strong className="admin-total">
                       {fmtBRL(Number(it.quantidade || 0) * Number(it.preco_unitario || 0))}
                     </strong>
                   </td>
-                  <td>
+                  <td data-label="Ações">
                     <ConfirmDelete
                       action={deleteItem}
                       id={it.id}

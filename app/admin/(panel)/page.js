@@ -167,12 +167,12 @@ export default async function AdminChamados({ searchParams }) {
                 const statusOptions = STATUS_BY_TIPO[s.tipo] ?? STATUS_BY_TIPO.atendimento;
                 return (
                   <tr key={s.id}>
-                    <td>
+                    <td data-label="Protocolo">
                       <Link href={`/admin/chamados/${s.id}`} className="admin-numero admin-numero-link">
                         {s.numero}
                       </Link>
                     </td>
-                    <td className="admin-cel-cliente">
+                    <td className="admin-cel-cliente" data-label="Cliente">
                       <strong>{s.nome}</strong>
                       <small>{s.empresa}</small>
                       <small>
@@ -180,10 +180,10 @@ export default async function AdminChamados({ searchParams }) {
                       </small>
                       <small>{s.cidade}</small>
                     </td>
-                    <td>
+                    <td data-label="Tipo">
                       <span className={`admin-badge ${tipoMeta.className}`}>{tipoMeta.label}</span>
                     </td>
-                    <td>
+                    <td data-label="Serviço / Urgência">
                       {s.servico}
                       {s.urgencia && s.urgencia !== 'Baixa' && (
                         <div className="admin-badge urgencia" style={{ marginTop: 6 }}>
@@ -191,17 +191,17 @@ export default async function AdminChamados({ searchParams }) {
                         </div>
                       )}
                     </td>
-                    <td className="admin-cel-desc">
+                    <td className="admin-cel-desc" data-label="Descrição">
                       <p>{s.descricao}</p>
                     </td>
                     {isAdmin && (
-                      <td>{s.tecnico_id ? tecnicosById[s.tecnico_id] ?? 'Técnico' : <span className="admin-muted">—</span>}</td>
+                      <td data-label="Técnico">{s.tecnico_id ? tecnicosById[s.tecnico_id] ?? 'Técnico' : <span className="admin-muted">—</span>}</td>
                     )}
-                    <td className="admin-meta">{fmtDate(s.created_at)}</td>
-                    <td>
+                    <td className="admin-meta" data-label="Data">{fmtDate(s.created_at)}</td>
+                    <td data-label="Status">
                       <span className={`admin-badge ${statusMeta.className}`}>{statusMeta.label}</span>
                     </td>
-                    <td>
+                    <td data-label="Ações">
                       <div className="admin-row-actions">
                         <Link href={`/admin/chamados/${s.id}`} className="admin-edit-btn">
                           <Icons name="eye" size={14} /> Ver

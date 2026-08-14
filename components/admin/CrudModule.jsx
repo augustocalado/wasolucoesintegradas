@@ -108,11 +108,11 @@ export default function CrudModule({
               {filtered.map((row) => (
                 <tr key={row.id}>
                   {columns.map((col) => (
-                    <td key={col.key} className={col.className}>
+                    <td key={col.key} className={col.className} data-label={col.label}>
                       {formatCell(row[col.key], col.format)}
                     </td>
                   ))}
-                  <td>
+                  <td data-label="Ações">
                     <div className="admin-row-actions">
                       <button type="button" className="admin-edit-btn" onClick={() => setEditing(editing?.id === row.id ? null : row)}>
                         <Icons name="check-square" size={14} /> {editing?.id === row.id ? 'Fechar' : 'Editar'}

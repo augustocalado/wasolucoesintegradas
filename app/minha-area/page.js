@@ -77,18 +77,18 @@ export default async function MinhaArea() {
                   const tipoMeta = TIPO_META[s.tipo] ?? { label: s.tipo, className: 'tipo-atendimento' };
                   return (
                     <tr key={s.id}>
-                      <td>
+                      <td data-label="Protocolo">
                         <span className="admin-numero">{s.numero}</span>
                       </td>
-                      <td>
+                      <td data-label="Tipo">
                         <span className={`admin-badge ${tipoMeta.className}`}>{tipoMeta.label}</span>
                       </td>
-                      <td>{s.servico}</td>
-                      <td className="admin-meta">{fmtDate(s.created_at)}</td>
-                      <td>
+                      <td data-label="Serviço">{s.servico}</td>
+                      <td className="admin-meta" data-label="Data">{fmtDate(s.created_at)}</td>
+                      <td data-label="Status">
                         <span className={`admin-badge ${statusMeta.className}`}>{statusMeta.label}</span>
                       </td>
-                      <td>
+                      <td data-label="">
                         <Link href={`/minha-area/chamados/${s.id}`} className="admin-edit-btn">
                           Acompanhar
                         </Link>
@@ -131,12 +131,12 @@ export default async function MinhaArea() {
                   );
                   return (
                     <tr key={o.id}>
-                      <td className="admin-meta">{fmtDate(o.created_at)}</td>
-                      <td>{(o.orcamento_itens ?? []).length}</td>
-                      <td className="admin-total">
+                      <td className="admin-meta" data-label="Data">{fmtDate(o.created_at)}</td>
+                      <td data-label="Itens">{(o.orcamento_itens ?? []).length}</td>
+                      <td className="admin-total" data-label="Valor">
                         {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total)}
                       </td>
-                      <td>
+                      <td data-label="Status">
                         <span className={`admin-badge ${statusMeta.className}`}>{statusMeta.label}</span>
                       </td>
                     </tr>
