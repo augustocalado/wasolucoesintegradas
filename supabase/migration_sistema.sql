@@ -123,3 +123,33 @@ alter table public.fornecedores enable row level security;
 alter table public.produtos enable row level security;
 alter table public.orcamentos enable row level security;
 alter table public.orcamento_itens enable row level security;
+
+-- ============================================================
+-- SETTINGS (logo do site, etc.)
+-- ============================================================
+create table if not exists public.settings (
+  key text primary key,
+  value text default '',
+  updated_at timestamptz not null default now()
+);
+
+insert into public.settings (key, value) values ('logo_url', '')
+on conflict (key) do nothing;
+
+alter table public.settings enable row level security;
+
+create policy "settings read public" on public.settings
+  for select using (true);
+
+-- ============================================================
+-- WORKFLOW DE ATENDIMENTO (técnico: fotos antes/depois + assinatura)
+-- ============================================================
+alter table public.solicitacoes add column if not exists tecnico_id uuid references auth.users (id) on delete set null;
+alter table public.solicitacoes add column if not exists fotos_antes text[] not null default '{}';
+alter table public.solicitacoes add column if not exists fotos_depois text[] not null default '{}';
+alter table public.solicitacoes add column if not exists assinatura_url text default '';
+alter table public.solicitacoes add column if not exists assinatura_nome text default '';
+alter table public.solicitacoes add column if not exists inicio_at timestamptz;
+alter table public.solicitacoes add column if not exists conclusao_at timestamptz;
+
+create index if not exists solicitacoes_tecnico_idx on public.solicitacoes (tecnico_id);
