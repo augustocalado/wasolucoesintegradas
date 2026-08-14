@@ -5,6 +5,7 @@ import Icons from '@/components/Icons';
 import { buildSolicitacaoMessage, buildWhatsappLink } from '@/lib/whatsapp';
 
 const VALIDATORS = {
+  tipo: (v) => v !== '',
   nome: (v) => v.trim().length >= 3,
   empresa: (v) => v.trim().length >= 2,
   telefone: (v) => /^\(?\d{2}\)?[\s-]?\d{4,5}[\s-]?\d{4}$/.test(v.trim()),
@@ -16,10 +17,18 @@ const VALIDATORS = {
 
 const SERVICOS = ['Elétrica', 'Iluminação', 'CFTV', 'Hidráulica', 'Manutenção', 'Instalação', 'Infraestrutura', 'Outro'];
 
+const TIPOS = [
+  { value: 'atendimento', label: 'Atendimento técnico', msg: 'Chamado de atendimento técnico' },
+  { value: 'suporte', label: 'Suporte técnico', msg: 'Chamado de suporte técnico' },
+  { value: 'orcamento', label: 'Orçamento', msg: 'Solicitação de orçamento' },
+];
+
 export default function FormSolicitacao() {
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
   const [whatsappUrl, setWhatsappUrl] = useState('');
+  const [numero, setNumero] = useState('');
+  const [tipo, setTipo] = useState('atendimento');
   const formRef = useRef(null);
 
   function validateField(name) {
@@ -50,7 +59,7 @@ export default function FormSolicitacao() {
     e.preventDefault();
     setError('');
 
-    const fields = ['nome', 'empresa', 'telefone', 'email', 'cidade', 'servico', 'descricao'];
+    const fields = ['tipo', 'nome', 'empresa', 'telefone', 'email', 'cidade', 'servico', 'descricao'];
     const allValid = fields.every(validateField);
 
     if (!allValid) {
@@ -60,6 +69,7 @@ export default function FormSolicitacao() {
     }
 
     const data = {
+      tipo: getFieldValue('tipo'),
       nome: getFieldValue('nome'),
       empresa: getFieldValue('empresa'),
       telefone: getFieldValue('telefone'),
@@ -83,6 +93,8 @@ export default function FormSolicitacao() {
         throw new Error('Falha ao enviar solicitação');
       }
 
+      const body = await res.json();
+      setNumero(body.numero ?? '');
       setWhatsappUrl(buildWhatsappLink(buildSolicitacaoMessage(data)));
       setStatus('success');
     } catch {
@@ -98,11 +110,18 @@ export default function FormSolicitacao() {
           <div className="success-icon-box">
             <Icons name="check-circle" size={38} />
           </div>
-          <h3>Solicitação de Atendimento Enviada!</h3>
+          <h3>{tipo === 'orcamento' ? 'Solicitação de Orçamento Enviada!' : 'Solicitação Enviada!'}</h3>
           <p>
-            Recebemos suas informações. Nossa equipe técnica de facilities está analisando seu problema e entrará em
+            Recebemos suas informações. Nossa equipe técnica de facilities está analisando sua solicitação e entrará em
             contato em instantes.
           </p>
+          {numero && (
+            <div className="success-protocol">
+              <span>Protocolo do chamado</span>
+              <strong>{numero}</strong>
+              <small>Guarde este número para acompanhar seu chamado.</small>
+            </div>
+          )}
           <div className="success-divider">ou se preferir</div>
           <p className="success-sub">
             Acelere o agendamento enviando os detalhes diretamente para o nosso WhatsApp:
@@ -121,6 +140,29 @@ export default function FormSolicitacao() {
   return (
     <div className="solicitacao-form-wrapper">
       <form id="form-solicitacao" className="professional-form" onSubmit={handleSubmit} noValidate ref={formRef}>
+        <div className="form-group">
+          <label htmlFor="tipo">Tipo de solicitação *</label>
+          <select
+            id="tipo"
+            name="tipo"
+            defaultValue=""
+            onChange={(e) => {
+              setTipo(e.target.value);
+              validateField('tipo');
+            }}
+          >
+            <option value="" disabled>
+              Selecione o tipo de solicitação
+            </option>
+            {TIPOS.map((t) => (
+              <option key={t.value} value={t.value}>
+                {t.label}
+              </option>
+            ))}
+          </select>
+          <span className="error-msg">Selecione o tipo de solicitação.</span>
+        </div>
+
         <div className="form-row">
           <div className="form-group">
             <label htmlFor="nome">Nome completo *</label>
@@ -201,7 +243,7 @@ export default function FormSolicitacao() {
         )}
 
         <button type="submit" className="btn btn-primary btn-block" id="btn-enviar-solicitacao" disabled={status === 'saving'}>
-          <Icons name="send" /> {status === 'saving' ? 'ENVIANDO...' : 'SOLICITAR ATENDIMENTO'}
+          <Icons name="send" /> {status === 'saving' ? 'ENVIANDO...' : tipo === 'orcamento' ? 'SOLICITAR ORÇAMENTO' : 'SOLICITAR ATENDIMENTO'}
         </button>
       </form>
     </div>

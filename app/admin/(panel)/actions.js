@@ -5,16 +5,17 @@ import { redirect } from 'next/navigation';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 
-async function assertAdmin() {
+const VALID_STATUS = ['novo', 'em_andamento', 'concluido', 'enviado', 'aprovado', 'recusado'];
+
+export async function assertAdmin() {
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) redirect('/admin/login');
+  return user;
 }
-
-const VALID_STATUS = ['novo', 'em_andamento', 'concluido'];
 
 export async function updateStatus(formData) {
   await assertAdmin();

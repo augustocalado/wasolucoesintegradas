@@ -1,37 +1,37 @@
 -- ============================================================
--- WA SOLUÇÕES INTEGRADAS - SCHEMA DO BANCO (Supabase / Postgres)
+-- WA SOLUÇÕES INTEGRADAS - MIGRATION: SISTEMA ADMIN COMPLETO
 -- Execute no Supabase Dashboard > SQL Editor
+-- (roda sobre o schema base que você já executou)
 -- ============================================================
 
--- ------------------------------------------------------------
--- CHAMADOS (solicitações enviadas pelo site)
--- tipo: atendimento | suporte | orcamento
--- status: novo | em_andamento | concluido | enviado | aprovado | recusado
--- ------------------------------------------------------------
-create table if not exists public.solicitacoes (
-  id uuid primary key default gen_random_uuid(),
-  numero text not null default 'WA-' || upper(substr(replace(gen_random_uuid()::text, '-', ''), 1, 6)),
-  nome text not null,
-  empresa text not null,
-  telefone text not null,
-  email text not null,
-  cidade text not null,
-  servico text not null,
-  urgencia text not null default 'Baixa',
-  descricao text not null,
-  tipo text not null default 'atendimento' check (tipo in ('atendimento', 'suporte', 'orcamento')),
-  status text not null default 'novo' check (status in ('novo', 'em_andamento', 'concluido', 'enviado', 'aprovado', 'recusado')),
-  created_at timestamptz not null default now(),
-  constraint solicitacoes_numero_key unique (numero)
-);
+-- Chamados: classificação por tipo (atendimento / suporte / orcamento)
+alter table public.solicitacoes add column if not exists tipo text not null default 'atendimento' check (tipo in ('atendimento', 'suporte', 'orcamento'));
 
-create index if not exists solicitacoes_status_idx on public.solicitacoes (status);
+-- Chamados: status ampliado (fluxo de orçamentos)
+alter table public.solicitacoes drop constraint if exists solicitacoes_status_check;
+alter table public.solicitacoes add constraint solicitacoes_status_check check (status in ('novo', 'em_andamento', 'concluido', 'enviado', 'aprovado', 'recusado'));
+
 create index if not exists solicitacoes_tipo_idx on public.solicitacoes (tipo);
-create index if not exists solicitacoes_created_at_idx on public.solicitacoes (created_at desc);
 
--- ------------------------------------------------------------
+-- NÚMERO DE PROTOCOLO (aleatório, único, não sequencial)
+alter table public.solicitacoes add column if not exists numero text;
+
+-- Preenche chamados existentes com número único (baseado no id, que é único)
+update public.solicitacoes
+set numero = 'WA-' || upper(substr(replace(id::text, '-', '') || gen_random_uuid()::text, 1, 6))
+where numero is null or trim(numero) = '';
+
+alter table public.solicitacoes alter column numero set not null;
+alter table public.solicitacoes alter column numero set default 'WA-' || upper(substr(replace(gen_random_uuid()::text, '-', ''), 1, 6));
+
+do $$
+begin
+  if not exists (select 1 from pg_constraint where conname = 'solicitacoes_numero_key') then
+    alter table public.solicitacoes add constraint solicitacoes_numero_key unique (numero);
+  end if;
+end $$;
+
 -- CLIENTES
--- ------------------------------------------------------------
 create table if not exists public.clientes (
   id uuid primary key default gen_random_uuid(),
   nome text not null,
@@ -45,9 +45,7 @@ create table if not exists public.clientes (
   created_at timestamptz not null default now()
 );
 
--- ------------------------------------------------------------
 -- FORNECEDORES
--- ------------------------------------------------------------
 create table if not exists public.fornecedores (
   id uuid primary key default gen_random_uuid(),
   nome text not null,
@@ -61,9 +59,7 @@ create table if not exists public.fornecedores (
   created_at timestamptz not null default now()
 );
 
--- ------------------------------------------------------------
 -- PRODUTOS (catálogo)
--- ------------------------------------------------------------
 create table if not exists public.produtos (
   id uuid primary key default gen_random_uuid(),
   nome text not null,
@@ -78,9 +74,10 @@ create table if not exists public.produtos (
   created_at timestamptz not null default now()
 );
 
--- ------------------------------------------------------------
+-- Margem (%) para produtos existentes
+alter table public.produtos add column if not exists margem numeric not null default 30;
+
 -- ORÇAMENTOS
--- ------------------------------------------------------------
 create table if not exists public.orcamentos (
   id uuid primary key default gen_random_uuid(),
   cliente_id uuid references public.clientes (id) on delete set null,
@@ -90,9 +87,7 @@ create table if not exists public.orcamentos (
   created_at timestamptz not null default now()
 );
 
--- ------------------------------------------------------------
 -- ITENS DO ORÇAMENTO
--- ------------------------------------------------------------
 create table if not exists public.orcamento_itens (
   id uuid primary key default gen_random_uuid(),
   orcamento_id uuid not null references public.orcamentos (id) on delete cascade,
@@ -103,6 +98,7 @@ create table if not exists public.orcamento_itens (
   created_at timestamptz not null default now()
 );
 
+create index if not exists solicitacoes_tipo_idx on public.solicitacoes (tipo);
 create index if not exists orcamento_itens_orcamento_idx on public.orcamento_itens (orcamento_id);
 create index if not exists produtos_nome_idx on public.produtos (nome);
 create index if not exists clientes_nome_idx on public.clientes (nome);
@@ -111,27 +107,10 @@ create index if not exists fornecedores_nome_idx on public.fornecedores (nome);
 -- Produto com nome repetido NÃO é permitido (ignora maiúsculas/minúsculas)
 create unique index if not exists produtos_nome_uniq on public.produtos (lower(nome));
 
--- ------------------------------------------------------------
--- SEGURANÇA
--- ------------------------------------------------------------
-alter table public.solicitacoes enable row level security;
-
--- Público (anon) pode SOMENTE inserir novos chamados
-create policy "anon_pode_inserir_solicitacoes"
-  on public.solicitacoes
-  for insert to anon
-  with check (true);
-
--- Clientes, fornecedores, produtos, orçamentos: sem policies =
--- somente o servidor (service_role) acessa; público não.
+-- Segurança: ativa RLS nas novas tabelas.
+-- Sem policies = somente o servidor (service_role) acessa; público não.
 alter table public.clientes enable row level security;
 alter table public.fornecedores enable row level security;
 alter table public.produtos enable row level security;
 alter table public.orcamentos enable row level security;
 alter table public.orcamento_itens enable row level security;
-
--- ============================================================
--- CRIAÇÃO DO USUÁRIO ADMIN
--- Não é feita por SQL. Crie em: Authentication > Users > Add user
--- (e-mail + senha). Esse usuário faz login em /admin.
--- ============================================================

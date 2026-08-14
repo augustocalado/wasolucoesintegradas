@@ -55,7 +55,7 @@ export default function AdminLogin() {
         </div>
 
         <h1>Acesso restrito</h1>
-        <p>Entre com suas credenciais para gerenciar as solicitações de atendimento.</p>
+        <p>Entre com suas credenciais para gerenciar chamados, clientes, produtos, fornecedores e orçamentos.</p>
 
         <form className="admin-login-form" onSubmit={handleSubmit}>
           <div>
