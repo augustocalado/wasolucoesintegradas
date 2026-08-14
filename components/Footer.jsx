@@ -1,4 +1,5 @@
 import Icons from '@/components/Icons';
+import SiteLogo from '@/components/SiteLogo';
 
 export default function Footer() {
   return (
@@ -6,11 +7,7 @@ export default function Footer() {
       <div className="container footer-grid">
         <div className="footer-brand-box">
           <a href="#inicio" className="logo logo-footer" aria-label="WA Soluções Integradas Home">
-            <svg className="logo-icon" width="35" height="35" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="100" height="100" rx="20" fill="#001f54" />
-              <path d="M25 35 L40 70 L50 48 L60 70 L75 35" stroke="#00f0ff" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M42 55 L58 55" stroke="#ffffff" strokeWidth="6" strokeLinecap="round" />
-            </svg>
+            <SiteLogo size={35} variant="footer" />
             <div className="logo-text">
               <span className="brand-name">WA</span>
               <span className="brand-sub text-white">Soluções Integradas</span>

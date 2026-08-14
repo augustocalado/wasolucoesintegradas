@@ -17,6 +17,29 @@ const CATEGORIAS = [
   'Outro',
 ];
 
+const UNIDADES = [
+  'un',
+  'pç',
+  'kg',
+  'g',
+  'm',
+  'm²',
+  'm³',
+  'l',
+  'ml',
+  'cx',
+  'pct',
+  'par',
+  'jogo',
+  'conjunto',
+  'rolo',
+  'saco',
+  'milheiro',
+  'hora',
+  'dia',
+  'serviço',
+];
+
 export default async function AdminProdutos() {
   const admin = createAdminClient();
   const [{ data: produtos }, { data: fornecedores }] = await Promise.all([
@@ -32,6 +55,7 @@ export default async function AdminProdutos() {
 
   const columns = [
     { key: 'nome', label: 'Produto', className: 'admin-cel-cliente' },
+    { key: 'marca', label: 'Marca' },
     { key: 'categoria', label: 'Categoria' },
     { key: 'preco_custo', label: 'Custo', format: 'currency' },
     { key: 'margem_pct', label: 'Margem' },
@@ -46,11 +70,11 @@ export default async function AdminProdutos() {
       columns={columns}
       fields={[]}
       formComponent={ProdutoForm}
-      formProps={{ categorias: CATEGORIAS, fornecedores: fornecedores ?? [] }}
+      formProps={{ categorias: CATEGORIAS, unidades: UNIDADES, fornecedores: fornecedores ?? [] }}
       createAction={createProduto}
       updateAction={updateProduto}
       deleteAction={deleteProduto}
-      searchKeys={['nome', 'categoria', 'fornecedor_nome']}
+      searchKeys={['nome', 'marca', 'categoria', 'fornecedor_nome']}
     />
   );
 }

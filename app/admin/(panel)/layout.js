@@ -1,11 +1,9 @@
 import { redirect } from 'next/navigation';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
-import { assertAdmin } from './actions';
+import { getUserRole } from '@/lib/roles';
 import AdminSidebar from '@/components/AdminSidebar';
 
 export default async function PanelLayout({ children }) {
-  await assertAdmin();
-
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
@@ -13,9 +11,16 @@ export default async function PanelLayout({ children }) {
 
   if (!user) redirect('/admin/login');
 
+  const role = getUserRole(user);
+  if (role === 'cliente') redirect('/minha-area');
+
   return (
     <div className="admin-shell">
-      <AdminSidebar userEmail={user.email} userName={user.user_metadata?.full_name || user.email} />
+      <AdminSidebar
+        userEmail={user.email}
+        userName={user.user_metadata?.full_name || user.email}
+        role={role}
+      />
       <div className="admin-content">{children}</div>
     </div>
   );

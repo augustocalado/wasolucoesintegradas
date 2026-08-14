@@ -10,6 +10,7 @@ function pickProduto(fd) {
   const precoVenda = margem >= 100 ? precoCusto : precoCusto / (1 - margem / 100);
   return {
     nome: (fd.get('nome') ?? '').trim(),
+    marca: (fd.get('marca') ?? '').trim(),
     descricao: (fd.get('descricao') ?? '').trim(),
     categoria: (fd.get('categoria') ?? 'Outro').trim(),
     unidade: (fd.get('unidade') ?? 'un').trim(),
@@ -21,8 +22,8 @@ function pickProduto(fd) {
   };
 }
 
-async function nomeJaExiste(admin, nome, idExcluido) {
-  let query = admin.from('produtos').select('id').ilike('nome', nome);
+async function nomeMarcaJaExiste(admin, nome, marca, idExcluido) {
+  let query = admin.from('produtos').select('id').ilike('nome', nome).ilike('marca', marca || '');
   if (idExcluido) query = query.neq('id', idExcluido);
   const { data } = await query.maybeSingle();
   return Boolean(data);
@@ -35,13 +36,13 @@ export async function createProduto(prevState, fd) {
   if (data.nome.length < 2) return { ok: false, error: 'Informe o nome do produto.' };
 
   const admin = createAdminClient();
-  if (await nomeJaExiste(admin, data.nome)) {
-    return { ok: false, error: 'Já existe um produto com esse nome.' };
+  if (await nomeMarcaJaExiste(admin, data.nome, data.marca)) {
+    return { ok: false, error: 'Já existe um produto com esse nome e marca.' };
   }
 
   const { error } = await admin.from('produtos').insert(data);
   if (error?.code === '23505') {
-    return { ok: false, error: 'Já existe um produto com esse nome.' };
+    return { ok: false, error: 'Já existe um produto com esse nome e marca.' };
   }
   if (error) return { ok: false, error: 'Erro ao salvar o produto.' };
 
@@ -57,13 +58,13 @@ export async function updateProduto(prevState, fd) {
   if (typeof id !== 'string' || data.nome.length < 2) return { ok: false, error: 'Informe o nome do produto.' };
 
   const admin = createAdminClient();
-  if (await nomeJaExiste(admin, data.nome, id)) {
-    return { ok: false, error: 'Já existe outro produto com esse nome.' };
+  if (await nomeMarcaJaExiste(admin, data.nome, data.marca, id)) {
+    return { ok: false, error: 'Já existe outro produto com esse nome e marca.' };
   }
 
   const { error } = await admin.from('produtos').update(data).eq('id', id);
   if (error?.code === '23505') {
-    return { ok: false, error: 'Já existe outro produto com esse nome.' };
+    return { ok: false, error: 'Já existe outro produto com esse nome e marca.' };
   }
   if (error) return { ok: false, error: 'Erro ao salvar o produto.' };
 

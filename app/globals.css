@@ -2240,11 +2240,13 @@ ul {
     background: var(--grad-card-dark);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: var(--radius-lg);
-    overflow: hidden;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .admin-table {
     width: 100%;
+    min-width: 640px;
     border-collapse: collapse;
     font-size: 0.9rem;
 }
@@ -2683,6 +2685,14 @@ ul {
     border-radius: var(--radius-md);
     padding: 24px;
     margin-bottom: 28px;
+}
+
+.admin-edit-panel {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-bottom: 24px;
 }
 
 .admin-form-grid {
@@ -3303,5 +3313,680 @@ ul {
         padding: 28px 20px;
         text-align: center;
         justify-content: center;
+    }
+}
+
+/* =========================================================
+   ADMIN - ROLES, CONFIGURACOES, CHAMADO (fotos/assinatura)
+   ========================================================= */
+.admin-role-badge {
+    color: #67e8f9;
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+}
+
+.admin-section-card {
+    background: var(--grad-card-dark);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.admin-subsection-hint {
+    color: var(--color-text-light-muted);
+    font-size: 0.85rem;
+    margin: 8px 0 16px;
+}
+
+.admin-form-ok {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 10px 14px;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    border-radius: var(--radius-sm);
+    color: #6ee7b7;
+    font-size: 0.88rem;
+}
+
+.admin-alert-close {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    margin-left: auto;
+    display: inline-flex;
+}
+
+.admin-logo-form {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.admin-logo-preview {
+    width: 130px;
+    height: 130px;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.admin-logo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.admin-logo-preview-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-text-light-muted);
+    font-size: 0.78rem;
+    text-align: center;
+    padding: 10px;
+}
+
+.admin-logo-fields {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    max-width: 340px;
+}
+
+.admin-file-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid rgba(0, 240, 255, 0.4);
+    border-radius: var(--radius-sm);
+    color: #67e8f9;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.admin-file-label:hover {
+    background: rgba(0, 240, 255, 0.08);
+}
+
+.admin-check-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-check-line label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.admin-edit-delete-row {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 14px;
+    margin-top: 4px;
+}
+
+.admin-badge.role-admin {
+    background: rgba(0, 240, 255, 0.12);
+    color: #67e8f9;
+    border: 1px solid rgba(0, 240, 255, 0.3);
+}
+
+.admin-badge.role-tecnico {
+    background: rgba(168, 85, 247, 0.15);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.35);
+}
+
+.admin-badge.role-cliente {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.admin-muted {
+    color: var(--color-text-light-muted);
+}
+
+.admin-numero-link {
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.admin-numero-link:hover {
+    color: #ffffff;
+}
+
+.admin-topbar-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.admin-chamado-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+    align-items: start;
+}
+
+.admin-chamado-side {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.admin-chamado-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.admin-chamado-grid div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.admin-chamado-label {
+    color: var(--color-text-light-muted);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.admin-chamado-desc {
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-chamado-desc p {
+    color: var(--color-text-light);
+    margin: 8px 0 0;
+}
+
+.admin-empty-small {
+    color: var(--color-text-light-muted);
+    font-size: 0.88rem;
+}
+
+.admin-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+}
+
+.admin-photo-grid a {
+    display: block;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    aspect-ratio: 1 / 1;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.admin-photo-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-fast);
+}
+
+.admin-photo-grid a:hover img {
+    transform: scale(1.05);
+}
+
+.admin-signature-box {
+    background: #ffffff;
+    border-radius: var(--radius-sm);
+    padding: 18px;
+    display: inline-block;
+}
+
+.admin-signature-box img {
+    background: #ffffff;
+    display: block;
+    max-height: 180px;
+}
+
+.admin-signature-box p {
+    color: #0a1128;
+    font-size: 0.85rem;
+    margin: 12px 0 0;
+}
+
+/* Assinatura (canvas) */
+.signature-block {
+    margin-top: 4px;
+}
+
+.signature-block label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.86rem;
+    color: var(--color-text-light);
+}
+
+.signature-canvas-wrap {
+    position: relative;
+    background: #ffffff;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.signature-canvas {
+    width: 100%;
+    max-width: 520px;
+    height: 200px;
+    display: block;
+    touch-action: none;
+    cursor: crosshair;
+}
+
+.signature-hint {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: #94a3b8;
+    font-size: 0.82rem;
+    pointer-events: none;
+}
+
+/* =========================================================
+   LOGO PERSONALIZADO (img)
+   ========================================================= */
+.logo-img {
+    border-radius: 12px;
+    object-fit: contain;
+}
+
+.logo-img-footer {
+    border-radius: 10px;
+}
+
+/* =========================================================
+   PORTAL DO CLIENTE (Minha area)
+   ========================================================= */
+.portal-shell {
+    min-height: 100vh;
+    background: var(--color-bg);
+    display: flex;
+    flex-direction: column;
+}
+
+.portal-header {
+    background: rgba(4, 10, 28, 0.92);
+    border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    backdrop-filter: blur(10px);
+}
+
+.portal-header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+.portal-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.portal-welcome {
+    color: var(--color-text-light-muted);
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.portal-main {
+    flex: 1;
+    padding-top: 36px;
+    padding-bottom: 60px;
+}
+
+.portal-body {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.portal-hero {
+    margin-bottom: 28px;
+}
+
+.portal-hero h1 {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    color: var(--color-text-light);
+}
+
+.portal-hero p {
+    color: var(--color-text-light-muted);
+    margin-top: 6px;
+}
+
+.portal-section {
+    margin-bottom: 36px;
+}
+
+.portal-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.portal-section-head h2 {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    color: var(--color-text-light);
+}
+
+.portal-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 40px 20px;
+    color: var(--color-text-light-muted);
+    background: var(--grad-card-dark);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md);
+    text-align: center;
+}
+
+.portal-card {
+    background: var(--grad-card-dark);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.portal-card h2 {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    color: var(--color-text-light);
+    margin-bottom: 12px;
+}
+
+.portal-card p {
+    color: var(--color-text-light);
+    margin: 0;
+}
+
+.portal-muted {
+    color: var(--color-text-light-muted) !important;
+}
+
+.portal-chamado-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 8px 0 24px;
+}
+
+.portal-chamado-head h1 {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    color: var(--color-text-light);
+}
+
+.portal-chamado-head p {
+    color: var(--color-text-light-muted);
+    margin-top: 6px;
+}
+
+.portal-chamado-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.portal-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.portal-timeline-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--color-text-light-muted);
+}
+
+.portal-timeline-step.done {
+    color: var(--color-text-light);
+}
+
+.portal-timeline-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-text-light-muted);
+    flex-shrink: 0;
+}
+
+.portal-timeline-step.done .portal-timeline-dot {
+    border-color: rgba(16, 185, 129, 0.5);
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+}
+
+.portal-timeline-step strong {
+    display: block;
+    font-size: 0.92rem;
+}
+
+.portal-timeline-step small {
+    color: var(--color-text-light-muted);
+    font-size: 0.8rem;
+}
+
+@media (max-width: 860px) {
+    .admin-chamado-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================================
+   AJUSTES MOBILE - SISTEMA TODO (admin + portal)
+   ========================================================= */
+@media (max-width: 768px) {
+    .admin-content {
+        padding: 18px 14px 70px;
+    }
+
+    .admin-page-title {
+        font-size: 1.3rem;
+    }
+
+    .admin-stats {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+
+    .admin-stat-card {
+        padding: 16px;
+    }
+
+    .admin-stat-card .stat-value {
+        font-size: 1.5rem;
+    }
+
+    .admin-section-card,
+    .admin-record-form,
+    .admin-edit-panel {
+        padding: 16px;
+    }
+
+    .admin-form-actions {
+        flex-wrap: wrap;
+    }
+
+    .admin-topbar {
+        flex-direction: column;
+    }
+
+    .admin-tabs {
+        gap: 8px;
+    }
+
+    .admin-tab {
+        padding: 7px 14px;
+        font-size: 0.8rem;
+    }
+
+    .admin-logo-form {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .admin-logo-fields {
+        align-items: center;
+    }
+
+    .admin-photo-grid {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        gap: 8px;
+    }
+
+    .admin-chamado-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .signature-canvas {
+        height: 160px;
+    }
+
+    .admin-add-item {
+        grid-template-columns: 1fr;
+        padding: 14px;
+    }
+
+    .admin-inline-edit {
+        flex-wrap: wrap;
+    }
+
+    .portal-header-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .portal-main {
+        padding-top: 24px;
+    }
+
+    .portal-hero h1 {
+        font-size: 1.5rem;
+    }
+
+    .portal-section-head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .portal-card {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 560px) {
+    .admin-sidebar {
+        gap: 8px;
+        padding: 10px 12px;
+    }
+
+    .admin-nav-link {
+        font-size: 0.75rem;
+        padding: 7px 10px;
+        gap: 6px;
+    }
+
+    .admin-sidebar-actions {
+        flex-wrap: wrap;
+    }
+
+    .admin-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-chamado-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-table {
+        font-size: 0.82rem;
+        min-width: 560px;
+    }
+
+    .admin-table th,
+    .admin-table td {
+        padding: 10px 12px;
+    }
+
+    .admin-save-btn,
+    .admin-cancel-btn,
+    .admin-delete-btn,
+    .admin-edit-btn {
+        padding: 9px 14px;
+        font-size: 0.8rem;
+    }
+
+    .admin-numero {
+        font-size: 0.72rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .portal-welcome {
+        display: none;
+    }
+
+    .portal-nav {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .admin-status-form button,
+    .admin-status-form select {
+        font-size: 0.78rem;
     }
 }

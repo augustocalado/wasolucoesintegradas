@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { createAdminClient } from '@/lib/supabase/admin';
 import AddItemForm from '@/components/admin/AddItemForm';
+import ConfirmDelete from '@/components/admin/ConfirmDelete';
 import Icons from '@/components/Icons';
 import { updateOrcamentoStatus, deleteOrcamento, addItem, updateItem, deleteItem } from '../actions';
 
@@ -181,19 +182,14 @@ export default async function OrcamentoDetalhe({ params }) {
                     </strong>
                   </td>
                   <td>
-                    <form action={deleteItem}>
-                      <input type="hidden" name="id" value={it.id} />
-                      <input type="hidden" name="orcamento_id" value={orcamento.id} />
-                      <button
-                        type="submit"
-                        className="admin-delete-btn"
-                        onClick={(e) => {
-                          if (!confirm('Remover este item?')) e.preventDefault();
-                        }}
-                      >
-                        <Icons name="trash2" size={14} />
-                      </button>
-                    </form>
+                    <ConfirmDelete
+                      action={deleteItem}
+                      id={it.id}
+                      hidden={[{ name: 'orcamento_id', value: orcamento.id }]}
+                      message="Remover este item?"
+                    >
+                      <Icons name="trash2" size={14} />
+                    </ConfirmDelete>
                   </td>
                 </tr>
               ))}
@@ -217,18 +213,15 @@ export default async function OrcamentoDetalhe({ params }) {
       </div>
       <AddItemForm orcamentoId={orcamento.id} produtos={produtos ?? []} action={addItem} />
 
-      <form
-        action={deleteOrcamento}
-        style={{ marginTop: 40 }}
-        onClick={(e) => {
-          if (!confirm('Excluir este orçamento permanentemente?')) e.preventDefault();
-        }}
-      >
-        <input type="hidden" name="id" value={orcamento.id} />
-        <button type="submit" className="admin-delete-btn">
+      <div style={{ marginTop: 40 }}>
+        <ConfirmDelete
+          action={deleteOrcamento}
+          id={orcamento.id}
+          message="Excluir este orçamento permanentemente?"
+        >
           <Icons name="trash2" size={14} /> Excluir orçamento
-        </button>
-      </form>
+        </ConfirmDelete>
+      </div>
     </div>
   );
 }

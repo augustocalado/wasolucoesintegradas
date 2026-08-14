@@ -1,23 +1,14 @@
+import { redirect } from 'next/navigation';
+import Link from 'next/link';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { updateStatus, deleteRequest } from './actions';
+import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { getUserRole } from '@/lib/roles';
+import { STATUS_META, TIPO_META, fmtDate } from '@/lib/status';
 import Icons from '@/components/Icons';
+import ConfirmDelete from '@/components/admin/ConfirmDelete';
+import { updateStatus, deleteRequest } from './actions';
 
 export const dynamic = 'force-dynamic';
-
-const STATUS_META = {
-  novo: { label: 'Novo', className: 'novo' },
-  em_andamento: { label: 'Em andamento', className: 'em_andamento' },
-  concluido: { label: 'Concluído', className: 'concluido' },
-  enviado: { label: 'Orçamento enviado', className: 'enviado' },
-  aprovado: { label: 'Aprovado', className: 'aprovado' },
-  recusado: { label: 'Recusado', className: 'recusado' },
-};
-
-const TIPO_META = {
-  atendimento: { label: 'Atendimento', className: 'tipo-atendimento' },
-  suporte: { label: 'Suporte técnico', className: 'tipo-suporte' },
-  orcamento: { label: 'Orçamento', className: 'tipo-orcamento' },
-};
 
 const STATUS_BY_TIPO = {
   atendimento: ['novo', 'em_andamento', 'concluido'],
@@ -42,35 +33,42 @@ const TIPO_FILTERS = [
   { value: 'orcamento', label: 'Orçamento' },
 ];
 
-function formatDate(value) {
-  if (!value) return '-';
-  return new Intl.DateTimeFormat('pt-BR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(new Date(value));
-}
-
 export default async function AdminChamados({ searchParams }) {
   const params = await searchParams;
   const statusFilter = typeof params.status === 'string' ? params.status : 'todos';
   const tipoFilter = typeof params.tipo === 'string' ? params.tipo : 'todos';
 
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect('/admin/login');
+  const role = getUserRole(user);
+  const isAdmin = role === 'admin';
+  const isTecnico = role === 'tecnico';
+
   const admin = createAdminClient();
 
+  let tecnicosById = {};
+  if (isAdmin) {
+    const { data: authData } = await admin.auth.admin.listUsers();
+    (authData?.users ?? []).forEach((u) => {
+      if ((u.user_metadata?.role || 'admin') === 'tecnico') {
+        tecnicosById[u.id] = u.user_metadata?.full_name || u.email;
+      }
+    });
+  }
+
   let query = admin.from('solicitacoes').select('*').order('created_at', { ascending: false });
-  if (statusFilter !== 'todos') {
-    query = query.eq('status', statusFilter);
-  }
-  if (tipoFilter !== 'todos') {
-    query = query.eq('tipo', tipoFilter);
-  }
+  if (isTecnico) query = query.eq('tecnico_id', user.id);
+  if (statusFilter !== 'todos') query = query.eq('status', statusFilter);
+  if (tipoFilter !== 'todos') query = query.eq('tipo', tipoFilter);
 
   const { data: solicitacoes, error } = await query;
 
-  const { data: statsData } = await admin.from('solicitacoes').select('status, tipo').limit(10000);
+  let statsQuery = admin.from('solicitacoes').select('status, tipo').limit(10000);
+  if (isTecnico) statsQuery = statsQuery.eq('tecnico_id', user.id);
+  const { data: statsData } = await statsQuery;
 
   const stats = { total: 0, novo: 0, em_andamento: 0, concluido: 0, enviado: 0, aprovado: 0, recusado: 0, atendimento: 0, suporte: 0, orcamento: 0 };
   (statsData ?? []).forEach((row) => {
@@ -84,7 +82,9 @@ export default async function AdminChamados({ searchParams }) {
       <header className="admin-topbar">
         <div>
           <h1 className="admin-page-title">Chamados</h1>
-          <p className="admin-page-sub">Solicitações recebidas pelo site: atendimentos, suporte técnico e orçamentos.</p>
+          <p className="admin-page-sub">
+            {isTecnico ? 'Chamados atribuídos a você.' : 'Solicitações recebidas pelo site: atendimentos, suporte técnico e orçamentos.'}
+          </p>
         </div>
       </header>
 
@@ -137,8 +137,12 @@ export default async function AdminChamados({ searchParams }) {
         </div>
       ) : !solicitacoes || solicitacoes.length === 0 ? (
         <div className="admin-empty">
-          <p>Nenhum chamado {tipoFilter !== 'todos' ? `de "${TIPO_META[tipoFilter]?.label}"` : ''} {statusFilter !== 'todos' ? `com status "${STATUS_META[statusFilter]?.label}"` : ''} por aqui ainda.</p>
-          <p>Os chamados enviados pelo formulário do site aparecerão aqui.</p>
+          <p>
+            Nenhum chamado{' '}
+            {tipoFilter !== 'todos' ? `de "${TIPO_META[tipoFilter]?.label}"` : ''}{' '}
+            {statusFilter !== 'todos' ? `com status "${STATUS_META[statusFilter]?.label}"` : ''} por aqui ainda.
+          </p>
+          <p>{isTecnico ? 'Aguarde o administrador atribuir chamados a você.' : 'Os chamados enviados pelo formulário do site aparecerão aqui.'}</p>
         </div>
       ) : (
         <div className="admin-table-wrap">
@@ -150,6 +154,7 @@ export default async function AdminChamados({ searchParams }) {
                 <th>Tipo</th>
                 <th>Serviço / Urgência</th>
                 <th>Descrição</th>
+                {isAdmin && <th>Técnico</th>}
                 <th>Data</th>
                 <th>Status</th>
                 <th>Ações</th>
@@ -163,7 +168,9 @@ export default async function AdminChamados({ searchParams }) {
                 return (
                   <tr key={s.id}>
                     <td>
-                      <span className="admin-numero">{s.numero}</span>
+                      <Link href={`/admin/chamados/${s.id}`} className="admin-numero admin-numero-link">
+                        {s.numero}
+                      </Link>
                     </td>
                     <td className="admin-cel-cliente">
                       <strong>{s.nome}</strong>
@@ -187,28 +194,39 @@ export default async function AdminChamados({ searchParams }) {
                     <td className="admin-cel-desc">
                       <p>{s.descricao}</p>
                     </td>
-                    <td className="admin-meta">{formatDate(s.created_at)}</td>
+                    {isAdmin && (
+                      <td>{s.tecnico_id ? tecnicosById[s.tecnico_id] ?? 'Técnico' : <span className="admin-muted">—</span>}</td>
+                    )}
+                    <td className="admin-meta">{fmtDate(s.created_at)}</td>
                     <td>
                       <span className={`admin-badge ${statusMeta.className}`}>{statusMeta.label}</span>
                     </td>
                     <td>
-                      <form action={updateStatus} className="admin-status-form">
-                        <input type="hidden" name="id" value={s.id} />
-                        <select name="status" defaultValue={s.status}>
-                          {statusOptions.map((st) => (
-                            <option key={st} value={st}>
-                              {STATUS_META[st].label}
-                            </option>
-                          ))}
-                        </select>
-                        <button type="submit">Atualizar</button>
-                      </form>
-                      <form action={deleteRequest} style={{ marginTop: 8 }}>
-                        <input type="hidden" name="id" value={s.id} />
-                        <button type="submit" className="admin-delete-btn">
-                          <Icons name="trash2" size={14} /> Excluir
-                        </button>
-                      </form>
+                      <div className="admin-row-actions">
+                        <Link href={`/admin/chamados/${s.id}`} className="admin-edit-btn">
+                          <Icons name="eye" size={14} /> Ver
+                        </Link>
+                        <form action={updateStatus} className="admin-status-form">
+                          <input type="hidden" name="id" value={s.id} />
+                          <select name="status" defaultValue={s.status}>
+                            {statusOptions.map((st) => (
+                              <option key={st} value={st}>
+                                {STATUS_META[st].label}
+                              </option>
+                            ))}
+                          </select>
+                          <button type="submit">OK</button>
+                        </form>
+                        {isAdmin && (
+                          <ConfirmDelete
+                            action={deleteRequest}
+                            id={s.id}
+                            message={`Excluir o chamado ${s.numero}?`}
+                          >
+                            <Icons name="trash2" size={14} />
+                          </ConfirmDelete>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 );

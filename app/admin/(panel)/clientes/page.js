@@ -9,7 +9,8 @@ export default async function AdminClientes() {
 
   const fields = [
     { name: 'nome', label: 'Nome / Razão social', required: true },
-    { name: 'documento', label: 'CPF / CNPJ', placeholder: '00.000.000/0001-00' },
+    { name: 'cnpj', label: 'CNPJ', placeholder: '00.000.000/0001-00' },
+    { name: 'documento', label: 'CPF', placeholder: '000.000.000-00' },
     { name: 'telefone', label: 'Telefone / WhatsApp', type: 'tel', required: true, placeholder: '(11) 99999-9999' },
     { name: 'email', label: 'E-mail', type: 'email', placeholder: 'contato@empresa.com.br' },
     { name: 'endereco', label: 'Endereço', placeholder: 'Rua, número, bairro' },
@@ -20,6 +21,7 @@ export default async function AdminClientes() {
 
   const columns = [
     { key: 'nome', label: 'Cliente', className: 'admin-cel-cliente' },
+    { key: 'cnpj', label: 'CNPJ' },
     { key: 'telefone', label: 'Telefone' },
     { key: 'email', label: 'E-mail' },
     { key: 'cidade', label: 'Cidade' },
@@ -35,7 +37,7 @@ export default async function AdminClientes() {
       createAction={createCliente}
       updateAction={updateCliente}
       deleteAction={deleteCliente}
-      searchKeys={['nome', 'documento', 'telefone', 'email', 'cidade']}
+      searchKeys={['nome', 'cnpj', 'documento', 'telefone', 'email', 'cidade']}
     />
   );
 }

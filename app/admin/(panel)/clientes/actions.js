@@ -8,6 +8,7 @@ function pickCliente(fd) {
   return {
     nome: (fd.get('nome') ?? '').trim(),
     documento: (fd.get('documento') ?? '').trim(),
+    cnpj: (fd.get('cnpj') ?? '').trim(),
     telefone: (fd.get('telefone') ?? '').trim(),
     email: (fd.get('email') ?? '').trim(),
     endereco: (fd.get('endereco') ?? '').trim(),

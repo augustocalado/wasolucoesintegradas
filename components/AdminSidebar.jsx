@@ -4,17 +4,24 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import AdminLogout from '@/components/AdminLogout';
 import Icons from '@/components/Icons';
+import { ROLE_LABELS } from '@/lib/roles';
 
-const NAV = [
+const NAV_ADMIN = [
   { href: '/admin', label: 'Chamados', icon: 'clipboard-list' },
   { href: '/admin/orcamentos', label: 'Orçamentos', icon: 'file-text' },
   { href: '/admin/clientes', label: 'Clientes', icon: 'users' },
   { href: '/admin/produtos', label: 'Produtos', icon: 'package' },
   { href: '/admin/fornecedores', label: 'Fornecedores', icon: 'truck' },
+  { href: '/admin/configuracoes', label: 'Configurações', icon: 'settings' },
 ];
 
-export default function AdminSidebar({ userEmail, userName }) {
+const NAV_TECNICO = [
+  { href: '/admin', label: 'Chamados', icon: 'clipboard-list' },
+];
+
+export default function AdminSidebar({ userEmail, userName, role = 'admin' }) {
   const pathname = usePathname();
+  const NAV = role === 'tecnico' ? NAV_TECNICO : NAV_ADMIN;
 
   function isActive(href) {
     if (href === '/admin') return pathname === '/admin' || pathname === '/admin/';
@@ -60,6 +67,7 @@ export default function AdminSidebar({ userEmail, userName }) {
           <div className="admin-sidebar-user-info">
             <strong>{userName}</strong>
             <small>{userEmail}</small>
+            <small className="admin-role-badge">{ROLE_LABELS[role] ?? role}</small>
           </div>
         </div>
         <div className="admin-sidebar-actions">

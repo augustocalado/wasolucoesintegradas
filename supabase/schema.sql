@@ -36,6 +36,7 @@ create table if not exists public.clientes (
   id uuid primary key default gen_random_uuid(),
   nome text not null,
   documento text default '',
+  cnpj text default '',
   telefone text not null,
   email text default '',
   endereco text default '',
@@ -67,6 +68,7 @@ create table if not exists public.fornecedores (
 create table if not exists public.produtos (
   id uuid primary key default gen_random_uuid(),
   nome text not null,
+  marca text not null default '',
   descricao text default '',
   categoria text not null default 'Outro',
   unidade text not null default 'un',
@@ -108,8 +110,9 @@ create index if not exists produtos_nome_idx on public.produtos (nome);
 create index if not exists clientes_nome_idx on public.clientes (nome);
 create index if not exists fornecedores_nome_idx on public.fornecedores (nome);
 
--- Produto com nome repetido NÃO é permitido (ignora maiúsculas/minúsculas)
-create unique index if not exists produtos_nome_uniq on public.produtos (lower(nome));
+-- Produto: o MESMO nome com MARCA diferente pode ser cadastrado normalmente.
+create unique index if not exists produtos_nome_marca_uniq on public.produtos (lower(nome), lower(marca));
+drop index if exists produtos_nome_uniq;
 
 -- ------------------------------------------------------------
 -- SEGURANÇA

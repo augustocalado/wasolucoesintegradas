@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { updateOrcamentoStatus, deleteOrcamento } from './actions';
 import Icons from '@/components/Icons';
+import ConfirmDelete from '@/components/admin/ConfirmDelete';
 
 export const dynamic = 'force-dynamic';
 
@@ -173,17 +174,11 @@ export default async function AdminOrcamentos({ searchParams }) {
                           </select>
                           <button type="submit">OK</button>
                         </form>
-                        <form
+                        <ConfirmDelete
                           action={deleteOrcamento}
-                          onClick={(e) => {
-                            if (!confirm('Excluir este orçamento?')) e.preventDefault();
-                          }}
-                        >
-                          <input type="hidden" name="id" value={o.id} />
-                          <button type="submit" className="admin-delete-btn">
-                            <Icons name="trash2" size={14} /> Excluir
-                          </button>
-                        </form>
+                          id={o.id}
+                          message="Excluir este orçamento?"
+                        />
                       </div>
                     </td>
                   </tr>

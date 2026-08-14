@@ -14,7 +14,7 @@ function calcVenda(custo, margem) {
   return (Number(custo) || 0) / (1 - m / 100);
 }
 
-export default function ProdutoForm({ categorias, fornecedores, initial = null, action, submitLabel, onCancel }) {
+export default function ProdutoForm({ categorias, unidades, fornecedores, initial = null, action, submitLabel, onCancel }) {
   const editing = Boolean(initial);
   const [custo, setCusto] = useState(initial?.preco_custo ?? '');
   const [margem, setMargem] = useState(initial?.margem ?? 30);
@@ -31,9 +31,9 @@ export default function ProdutoForm({ categorias, fornecedores, initial = null, 
           <label htmlFor="f-nome">Nome do produto *</label>
           <input id="f-nome" name="nome" type="text" required placeholder="Ex: Refletor LED 50W" defaultValue={initial?.nome ?? ''} />
         </div>
-        <div className="admin-form-field full">
-          <label htmlFor="f-descricao">Descrição</label>
-          <textarea id="f-descricao" name="descricao" rows={2} defaultValue={initial?.descricao ?? ''}></textarea>
+        <div className="admin-form-field">
+          <label htmlFor="f-marca">Marca</label>
+          <input id="f-marca" name="marca" type="text" placeholder="Ex: Elgin" defaultValue={initial?.marca ?? ''} />
         </div>
         <div className="admin-form-field">
           <label htmlFor="f-categoria">Categoria</label>
@@ -46,8 +46,21 @@ export default function ProdutoForm({ categorias, fornecedores, initial = null, 
           </select>
         </div>
         <div className="admin-form-field">
-          <label htmlFor="f-unidade">Unidade</label>
-          <input id="f-unidade" name="unidade" type="text" placeholder="un, m, cx" defaultValue={initial?.unidade ?? 'un'} />
+          <label htmlFor="f-unidade">Medida</label>
+          <select id="f-unidade" name="unidade" defaultValue={initial?.unidade || 'un'}>
+            {(unidades || ['un']).includes(initial?.unidade) ? null : (
+              <option value={initial?.unidade || ''}>{initial?.unidade || '—'}</option>
+            )}
+            {(unidades || ['un']).map((u) => (
+              <option key={u} value={u}>
+                {u}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="admin-form-field full">
+          <label htmlFor="f-descricao">Descrição</label>
+          <textarea id="f-descricao" name="descricao" rows={2} defaultValue={initial?.descricao ?? ''}></textarea>
         </div>
         <div className="admin-form-field">
           <label htmlFor="f-preco_custo">Preço de custo *</label>

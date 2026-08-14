@@ -17,7 +17,7 @@ export default function AdminLogin() {
     setLoading(true);
 
     const supabase = createClient();
-    const { error: authError } = await supabase.auth.signInWithPassword({
+    const { data, error: authError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -29,7 +29,8 @@ export default function AdminLogin() {
       return;
     }
 
-    router.push('/admin');
+    const role = data.user?.user_metadata?.role || 'admin';
+    router.push(role === 'cliente' ? '/minha-area' : '/admin');
     router.refresh();
   }
 
